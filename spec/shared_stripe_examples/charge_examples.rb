@@ -191,6 +191,19 @@ shared_examples 'Charge API' do
     expect(charge1.balance_transaction).not_to eq(charge2.balance_transaction)
   end
 
+  context "when expanding balance transactions" do
+    it "includes a balance transaction with fee on the charge" do
+      charge = Stripe::Charge.create(
+        amount: 999,
+        currency: 'USD',
+        card: stripe_helper.generate_card_token,
+        expand: ['balance_transaction'],
+        description: 'card charge'
+      )
+      expect(charge.balance_transaction.fee).to eq(20)
+    end
+  end
+
   context "retrieving a list of charges" do
     before do
       @customer = Stripe::Customer.create(email: 'johnny@appleseed.com')

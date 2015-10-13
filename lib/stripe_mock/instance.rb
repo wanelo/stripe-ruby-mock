@@ -120,6 +120,10 @@ module StripeMock
       "#{StripeMock.global_id_prefix}#{prefix}_#{@balance_transaction_counter += 1}"
     end
 
+    def new_balance_transaction_object(amount, prefix)
+      {id: new_balance_transaction(prefix), fee: (amount * 0.02).ceil}
+    end
+
     def symbolize_names(hash)
       Stripe::Util.symbolize_names(hash)
     end
